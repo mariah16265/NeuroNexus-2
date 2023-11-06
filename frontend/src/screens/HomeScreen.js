@@ -44,7 +44,7 @@ function HomeScreen() {
   }, []);
   return (
     <div>
-      <h1>Featured Products</h1>
+      <h1 id="heading">Featured Products</h1>
       <div className="products">
         {loading ? (
           <div>Loading...</div>

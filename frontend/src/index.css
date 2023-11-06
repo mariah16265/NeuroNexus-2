@@ -2,18 +2,25 @@ body {
   margin: 0;
 
   background-image: url('C:\Users\maria\OneDrive\Desktop\amazon\frontend\bak.jpg');
-  background-repeat: repeat;
+  /* background-repeat: repeat; */
+  /* background-color: #545f66; */
   /* background-size: cover; */
 }
 /*1 rem=16px */
 header {
-  background-color: #404040;
-  padding: 1rem;
+  background-color: #6c8389;
+  padding: 1.5rem;
+}
+#heading {
+  background-color: #ffffff;
+  padding: 0.75rem;
+  width: 300px;
 }
 header a {
   color: #ffffff;
   font-weight: bold;
   text-decoration: none;
+  font-size: larger;
 }
 main {
   padding: 1rem;
@@ -27,11 +34,12 @@ main {
 .product {
   font-size: larger;
   font-family: 'Times New Roman', Times, serif;
-  background-color: white;
+  /* background-color: white; */
   /* background-image: url('C:\Users\maria\OneDrive\Desktop\amazon\frontend\inp.jpg'); */
   border: 1px #404040 solid;
   margin: 1rem;
   padding: 0.65rem;
+  background-color: white;
 }
 .product img {
   width: 100%;
