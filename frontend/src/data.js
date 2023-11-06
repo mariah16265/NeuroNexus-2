@@ -23,7 +23,7 @@ const data = {
       description: 'Extremely Hydrating',
     },
     {
-      name: 'ESTEE LAUDER Advanced Night Repair',
+      name: 'Advanced Night Repair',
       slug: 'estee-lauder-advanced-night-repair',
       category: 'SkinCare',
       image: '/images/p3.jpg',
