@@ -4,6 +4,7 @@ import ProductScreen from './screens/ProductScreen';
 import Navbar from 'react-bootstrap/Navbar';
 import Container from 'react-bootstrap/Container';
 import { LinkContainer } from 'react-router-bootstrap';
+import logo from './logo.jpg';
 //JSX is a syntax extension for JavaScript that allows you to write HTML-like code in your JavaScript files.
 function App() {
   return (
@@ -16,7 +17,15 @@ function App() {
           <Navbar bg="dark" variant="dark">
             <Container>
               <LinkContainer to="/">
-                <Navbar.Brand>amazon</Navbar.Brand>
+                <Navbar.Brand>
+                  <img
+                    src={logo} // Use the imported image
+                    alt="Logo"
+                    width="131.6"
+                    height="50"
+                    className="d-inline-block align-top"
+                  />
+                </Navbar.Brand>
               </LinkContainer>
             </Container>
           </Navbar>

@@ -11,10 +11,13 @@ body {
 #heading {
   /* background-color: #ffffff; */
   /* width: 400px; */
-  font-size: xx-large;
+
+  /* font-size: xx-large; */
+
   padding: 0.55rem;
   margin-bottom: 1rem;
 }
+
 .site-container {
   min-height: 100vh;
 }
