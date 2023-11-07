@@ -15,7 +15,7 @@ app.get('/api/products/slug/:slug', (req, res) => {
     res.status(404).send({ message: 'Product Not Found' });
   }
 });
-const port = process.env.PORT || 5001;
+const port = process.env.PORT || 4000;
 app.listen(port, () => {
   console.log(`server at http://localhost:${port}`);
 });

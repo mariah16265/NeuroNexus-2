@@ -80,12 +80,13 @@ function ProductScreen() {
               <h1>{products.name}</h1>
             </ListGroup.Item>
             <ListGroup.Item>
-              <Rating>
+              <Rating
                 rating={products.rating}
                 numReviews={products.numReviews}
-              </Rating>
+              ></Rating>
             </ListGroup.Item>
             <ListGroup.Item>Price: AED {products.price}</ListGroup.Item>
+            <ListGroup.Item>Description: {products.description}</ListGroup.Item>
           </ListGroup>
         </Col>
         <Col md={3}>

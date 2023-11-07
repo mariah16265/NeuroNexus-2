@@ -1,7 +1,7 @@
 const data = {
   products: [
     {
-      name: 'CeraVe Foaming Cleanser ',
+      name: 'Foaming Cleanser ',
       slug: 'CeraVe-fomaing-cleasner',
       category: 'SkinCare',
       image: '/images/p1.jpg',
@@ -10,10 +10,11 @@ const data = {
       brand: 'CeraVe',
       rating: 4.85,
       numReviews: 410,
-      description: 'Effective for acne-prone and sensitive skin',
+      description:
+        'CeraVe Foaming Facial Cleanser features ceramides, hyaluronic acid, and niacinamide, and is formulated to help to maintain your skin’s protective barrier, lock in moisture, and calm your skin.',
     },
     {
-      name: 'Cetaphil Moisturising Lotion',
+      name: 'Moisturising Lotion',
       slug: 'Cetaphil-mosituirising-lotion',
       category: 'SkinCare',
       image: '/images/p2.jpg',
@@ -22,7 +23,8 @@ const data = {
       brand: 'Cetaphil',
       rating: 4.45,
       numReviews: 320,
-      description: 'Extremely Hydrating',
+      description:
+        '\n Specially formulated with a dermatologist-backed blend of niacinamide (vitamin B3), panthenol (vitamin B5) and hydrating glycerin to improve the resilience of sensitive skin.',
     },
     {
       name: 'Advanced Night Repair',
@@ -34,10 +36,11 @@ const data = {
       brand: 'ESTEE LAUDER',
       rating: 4.95,
       numReviews: 650,
-      description: 'Better than expected',
+      description:
+        'Harness the restorative power of night. This deep- and fast-penetrating face serum, with our exclusive Night Peptide, boosts 7 key skin-renewing actions. Reduces the look of multiple signs of aging. Skin looks smoother and less lined, younger, healthier—more radiant and even toned.',
     },
     {
-      name: 'CeraVe Eye Repair Cream',
+      name: 'Eye Repair Cream',
       slug: 'CeraVe-eye-repair-cream',
       category: 'SkinCare',
       countInStock: 0,
@@ -46,7 +49,8 @@ const data = {
       brand: 'CeraVe',
       rating: 4.3,
       numReviews: 100,
-      description: 'My dark circles are gone!',
+      description:
+        'CeraVe Eye Repair Cream is ophthalmologist-tested and features a non-greasy, fast-absorbing, fragrance-free formula that works to minimize the appearance of dark circles and eye puffiness. ',
     },
     //   {
     //     name: 'ISNTREE Hyaluronic Airy SunStick',

@@ -11,8 +11,8 @@ function Product(props) {
         <img
           src={products.image}
           className="card-img-top"
-          width="679"
-          height="329"
+          width="149"
+          height="259"
           alt={products.name}
         ></img>
       </Link>

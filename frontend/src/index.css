@@ -10,8 +10,10 @@ body {
 
 #heading {
   /* background-color: #ffffff; */
+  /* width: 400px; */
+  font-size: xx-large;
   padding: 0.55rem;
-  width: 500px;
+  margin-bottom: 1rem;
 }
 .site-container {
   min-height: 100vh;
@@ -29,8 +31,25 @@ main {
   display: flex;
   /*if no space, new items will be pushed to new line */
   flex-wrap: wrap;
+
   justify-content: center;
 }
+
+/* Set the desired height for the card */
+.card {
+  width: 249px;
+}
+/* Set the height of the card's content */
+/*.card-body {
+  width: 100%;
+  overflow: hidden;
+}
+
+
+/* If you want to adjust margins as well, you can do the following: */
+/* .mb-3 {
+  margin: 10px; /* Adjust the margin as needed */
+
 .product {
   font-size: larger;
   font-family: 'Times New Roman', Times, serif;
@@ -39,8 +58,10 @@ main {
   border: 1px #404040 solid;
   margin: 2rem;
   padding: 0.65rem;
+
   background-color: white;
 }
+
 .rating span {
   color: #ffc000;
 }
