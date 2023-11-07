@@ -1,29 +1,29 @@
 body {
   margin: 0;
 
-  background-image: url('C:\Users\maria\OneDrive\Desktop\amazon\frontend\bak.jpg');
+  /* background-image: url('C:\Users\maria\OneDrive\Desktop\amazon\frontend\bak.jpg'); */
   /* background-repeat: repeat; */
-  /* background-color: #545f66; */
+  background-color: #f5f5f5;
   /* background-size: cover; */
 }
 /*1 rem=16px */
-header {
-  background-color: #6c8389;
-  padding: 1.5rem;
-}
+
 #heading {
-  background-color: #ffffff;
-  padding: 0.75rem;
-  width: 300px;
+  /* background-color: #ffffff; */
+  padding: 0.55rem;
+  width: 500px;
 }
-header a {
-  color: #ffffff;
-  font-weight: bold;
-  text-decoration: none;
-  font-size: larger;
+.site-container {
+  min-height: 100vh;
 }
 main {
+  /*to occupy whole screen */
+  flex: 1;
   padding: 1rem;
+}
+.btn-primary {
+  background-color: #f0c040;
+  color: black;
 }
 .products {
   display: flex;
@@ -37,14 +37,18 @@ main {
   /* background-color: white; */
   /* background-image: url('C:\Users\maria\OneDrive\Desktop\amazon\frontend\inp.jpg'); */
   border: 1px #404040 solid;
-  margin: 1rem;
+  margin: 2rem;
   padding: 0.65rem;
   background-color: white;
 }
-.product img {
+.rating span {
+  color: #ffc000;
+}
+.card-img-top {
+  padding: 0.55rem;
   width: 100%;
-  max-width: 305px;
-  max-height: 285px;
+  /* max-width: 305px;
+  max-height: 235px; */
 }
 .product-info {
   padding: 1rem;

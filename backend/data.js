@@ -44,6 +44,28 @@ const data = {
       numReviews: 10,
       description: 'My dark circles are gone!',
     },
+    //   {
+    //     name: 'ISNTREE Hyaluronic Airy SunStick',
+    //     slug: 'ISNTREE-sunscrren',
+    //     category: 'SkinCare',
+    //     image: '/images/p5.jpeg',
+    //     price: 55,
+    //     brand: 'ISNTREE',
+    //     rating: 4.95,
+    //     numReviews: 10,
+    //     description: 'Moisturising and light weight',
+    //   },
+    //   {
+    //     name: 'Tretinoin Cream ',
+    //     slug: 'Tretinoin',
+    //     category: 'SkinCare',
+    //     image: '/images/p6.jpg',
+    //     price: 190,
+    //     brand: 'Tretinoin',
+    //     rating: 4.5,
+    //     numReviews: 10,
+    //     description: 'Extremely Hydrating',
+    //   },
   ],
 };
 export default data;
