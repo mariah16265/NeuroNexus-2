@@ -8,7 +8,7 @@ const data = {
       price: 74.98,
       brand: 'CeraVe',
       rating: 4.5,
-      numReviews: 10,
+      numReviews: 300,
       description: 'Effective for acne-prone and sensitive skin',
     },
     {
@@ -19,7 +19,7 @@ const data = {
       price: 190,
       brand: 'Cetaphil',
       rating: 4.5,
-      numReviews: 10,
+      numReviews: 251,
       description: 'Extremely Hydrating',
     },
     {
@@ -30,7 +30,7 @@ const data = {
       price: 325,
       brand: 'ESTEE LAUDER',
       rating: 4.5,
-      numReviews: 10,
+      numReviews: 591,
       description: 'Better than expected',
     },
     {
@@ -41,7 +41,7 @@ const data = {
       price: 80,
       brand: 'CeraVe',
       rating: 4.5,
-      numReviews: 10,
+      numReviews: 110,
       description: 'My dark circles are gone!',
     },
   ],
