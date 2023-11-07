@@ -12,7 +12,7 @@ app.get('/api/products/slug/:slug', (req, res) => {
     //This sends the product data as a JSON response to the client, indicating that the product has been found.
     res.send(product);
   } else {
-    res.status(404).send({ message: 'Producy Not Found' });
+    res.status(404).send({ message: 'Product Not Found' });
   }
 });
 const port = process.env.PORT || 5001;
