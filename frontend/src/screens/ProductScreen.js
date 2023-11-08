@@ -56,6 +56,7 @@ function ProductScreen() {
   }, [slug]);
   //by using useContext we have access to state of context and can change it
   const { state, dispatch: ctxDispatch } = useContext(Store);
+  //destructuring the cart property from the state object. This allows you to directly access the cart state from the context.
   const { cart } = state;
   //function to add items to cart
   const addToCartHandler = async () => {
@@ -63,8 +64,9 @@ function ProductScreen() {
     const existItem = cart.cartItems.find((x) => x._id === products._id);
     //if it does, increase quantity by one, else set it to 1
     const quantity = existItem ? existItem.quantity + 1 : 1;
-    //stock should not be less than quantitys
+    //this line of code sends an asynchronous GET request to an API endpoint to retrieve information about a specific product.
     const { data } = await axios.get(`/api/products/${products._id}`);
+    //stock should not be less than quantity
     if (data.countInStock < quantity) {
       window.alert('Out Of Stock!');
       return;

@@ -44,7 +44,10 @@ function App() {
                     height="47"
                     className="d-inline-block align-middle"
                   />
+
                   {cart.cartItems.length > 0 && (
+                    //a: This variable represents the accumulator
+                    //c: This variable represents the current item in the array during each iteration.
                     <Badge pill bg="warning" text="dark">
                       {cart.cartItems.reduce((a, c) => a + c.quantity, 0)}
                     </Badge>
