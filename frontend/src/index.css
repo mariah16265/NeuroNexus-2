@@ -83,3 +83,9 @@ main {
 .img-large {
   max-width: 100%;
 }
+.img-thumbnail {
+  height: 120px;
+}
+#shop {
+  margin-bottom: 2rem;
+}

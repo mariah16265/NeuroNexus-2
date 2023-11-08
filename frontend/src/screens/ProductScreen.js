@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { useContext, useEffect, useReducer } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import ListGroup from 'react-bootstrap/ListGroup';
@@ -29,6 +29,8 @@ const reducer = (state, action) => {
   }
 };
 function ProductScreen() {
+  const navigate = useNavigate();
+
   const params = useParams();
   const { slug } = params;
   const [{ loading, error, products }, dispatch] = useReducer(reducer, {
@@ -58,6 +60,7 @@ function ProductScreen() {
   const { state, dispatch: ctxDispatch } = useContext(Store);
   //destructuring the cart property from the state object. This allows you to directly access the cart state from the context.
   const { cart } = state;
+
   //function to add items to cart
   const addToCartHandler = async () => {
     //check if current product exists in the cart,
@@ -76,6 +79,8 @@ function ProductScreen() {
       type: 'CART_ADD_ITEM',
       payload: { ...products, quantity },
     });
+    //when we add to cart it will go to shopping cart page
+    navigate('/cart');
   };
 
   return loading ? (

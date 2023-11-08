@@ -9,6 +9,7 @@ import { Badge, Nav } from 'react-bootstrap';
 import { useContext } from 'react';
 import { Store } from './Store.js';
 import cartpic from './cartpic.jpg';
+import CartScreen from './screens/CartScreen.js';
 //JSX is a syntax extension for JavaScript that allows you to write HTML-like code in your JavaScript files.
 function App() {
   const { state } = useContext(Store);
@@ -35,20 +36,34 @@ function App() {
                 </Navbar.Brand>
               </LinkContainer>
               <Nav className="ms-auto">
-                <Link to="/cart" className="nav-link">
+                <Link
+                  to="/cart"
+                  className="nav-link"
+                  style={{ position: 'relative' }}
+                >
                   <img
                     id="letstry"
-                    src={cartpic} // Use the imported image
+                    src={cartpic}
                     alt="Logo"
                     width="50"
                     height="47"
                     className="d-inline-block align-middle"
                   />
-
                   {cart.cartItems.length > 0 && (
-                    //a: This variable represents the accumulator
-                    //c: This variable represents the current item in the array during each iteration.
-                    <Badge pill bg="warning" text="dark">
+                    <Badge
+                      pill
+                      bg="warning"
+                      text="dark"
+                      style={{
+                        //allows you to place it anywhere within the container.
+                        position: 'absolute',
+                        //to position the badge's top-left corner at the center of the container.
+                        top: '45%',
+                        left: '57%',
+                        //centers the badge within the container both vertically and horizontally.
+                        transform: 'translate(-50%, -50%)',
+                      }}
+                    >
                       {cart.cartItems.reduce((a, c) => a + c.quantity, 0)}
                     </Badge>
                   )}
@@ -61,6 +76,7 @@ function App() {
           <Container className="mt-3">
             <Routes>
               <Route path="/products/:slug" element={<ProductScreen />} />
+              <Route path="/cart" element={<CartScreen />} />
               <Route path="/" element={<HomeScreen />} />
             </Routes>
           </Container>
