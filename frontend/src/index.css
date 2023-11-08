@@ -18,6 +18,9 @@ body {
   margin-bottom: 1rem;
 }
 
+#letstry {
+  color: #282c34;
+}
 .site-container {
   min-height: 100vh;
 }

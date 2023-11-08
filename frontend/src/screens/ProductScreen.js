@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { useEffect, useReducer } from 'react';
+import { useContext, useEffect, useReducer } from 'react';
 import { useParams } from 'react-router-dom';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -13,7 +13,7 @@ import { Helmet } from 'react-helmet-async';
 import LoadingBox from '../Components/LoadingBox';
 import MessageBox from '../Components/MessageBox';
 import { getError } from '../util';
-
+import { Store } from '../Store.js';
 const reducer = (state, action) => {
   switch (action.type) {
     case 'FETCH_REQUEST':
@@ -54,6 +54,17 @@ function ProductScreen() {
     fetchData();
     // When slug changes (e.g., when a user navigates to a different product page with a different slug), the effect is re-executed.
   }, [slug]);
+  //by using useContext we have access to state of context and can change it
+  const { state, dispatch: ctxDispatch } = useContext(Store);
+  //function to add items to cart
+  const addToCartHandler = () => {
+    //dispatch action on react context
+    ctxDispatch({
+      type: 'CART_ADD_ITEM',
+      payload: { ...products, quantity: 1 },
+    });
+  };
+
   return loading ? (
     <LoadingBox />
   ) : error ? (
@@ -115,7 +126,9 @@ function ProductScreen() {
                 {products.countInStock > 0 && ( //d-grid:button will be full width
                   <ListGroupItem>
                     <div className="d-grid">
-                      <Button variant="primary">Add to Cart</Button>
+                      <Button onClick={addToCartHandler} variant="primary">
+                        Add to Cart
+                      </Button>
                     </div>
                   </ListGroupItem>
                 )}
