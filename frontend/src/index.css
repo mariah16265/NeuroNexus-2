@@ -89,3 +89,6 @@ main {
 #shop {
   margin-bottom: 2rem;
 }
+.small-container {
+  max-width: 600px;
+}

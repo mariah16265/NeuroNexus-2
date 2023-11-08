@@ -10,6 +10,7 @@ import { useContext } from 'react';
 import { Store } from './Store.js';
 import cartpic from './cartpic.jpg';
 import CartScreen from './screens/CartScreen.js';
+import SigninScreen from './screens/SigninScreen.js';
 //JSX is a syntax extension for JavaScript that allows you to write HTML-like code in your JavaScript files.
 function App() {
   const { state } = useContext(Store);
@@ -77,6 +78,8 @@ function App() {
             <Routes>
               <Route path="/products/:slug" element={<ProductScreen />} />
               <Route path="/cart" element={<CartScreen />} />
+              <Route path="/signin" element={<SigninScreen />} />
+
               <Route path="/" element={<HomeScreen />} />
             </Routes>
           </Container>
