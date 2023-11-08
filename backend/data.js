@@ -1,6 +1,7 @@
 const data = {
   products: [
     {
+      _id: '1',
       name: 'Foaming Cleanser ',
       slug: 'CeraVe-fomaing-cleasner',
       category: 'SkinCare',
@@ -14,6 +15,7 @@ const data = {
         'CeraVe Foaming Facial Cleanser features ceramides, hyaluronic acid, and niacinamide, and is formulated to help to maintain your skin’s protective barrier, lock in moisture, and calm your skin.',
     },
     {
+      _id: '2',
       name: 'Moisturising Lotion',
       slug: 'Cetaphil-mosituirising-lotion',
       category: 'SkinCare',
@@ -27,6 +29,7 @@ const data = {
         '\n Specially formulated with a dermatologist-backed blend of niacinamide (vitamin B3), panthenol (vitamin B5) and hydrating glycerin to improve the resilience of sensitive skin.',
     },
     {
+      _id: '3',
       name: 'Advanced Night Repair',
       slug: 'estee-lauder-advanced-night-repair',
       category: 'SkinCare',
@@ -40,6 +43,7 @@ const data = {
         'Harness the restorative power of night. This deep- and fast-penetrating face serum, with our exclusive Night Peptide, boosts 7 key skin-renewing actions. Reduces the look of multiple signs of aging. Skin looks smoother and less lined, younger, healthier—more radiant and even toned.',
     },
     {
+      _id: '4',
       name: 'Eye Repair Cream',
       slug: 'CeraVe-eye-repair-cream',
       category: 'SkinCare',

@@ -56,12 +56,23 @@ function ProductScreen() {
   }, [slug]);
   //by using useContext we have access to state of context and can change it
   const { state, dispatch: ctxDispatch } = useContext(Store);
+  const { cart } = state;
   //function to add items to cart
-  const addToCartHandler = () => {
+  const addToCartHandler = async () => {
+    //check if current product exists in the cart,
+    const existItem = cart.cartItems.find((x) => x._id === products._id);
+    //if it does, increase quantity by one, else set it to 1
+    const quantity = existItem ? existItem.quantity + 1 : 1;
+    //stock should not be less than quantitys
+    const { data } = await axios.get(`/api/products/${products._id}`);
+    if (data.countInStock < quantity) {
+      window.alert('Out Of Stock!');
+      return;
+    }
     //dispatch action on react context
     ctxDispatch({
       type: 'CART_ADD_ITEM',
-      payload: { ...products, quantity: 1 },
+      payload: { ...products, quantity },
     });
   };
 
