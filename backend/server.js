@@ -1,9 +1,26 @@
 import express from 'express';
 import data from './data.js';
+import mongoose from 'mongoose';
+import dotenv from 'dotenv';
+//to fetch variables in env file
+dotenv.config();
+//connect to database
+//returns a promise
+
+mongoose
+  .connect(process.env.MONGODB_URI)
+  .then(() => {
+    console.log('connected to db');
+  })
+  .catch((err) => {
+    console.log(err.message);
+  });
+
 const app = express();
 app.get('/api/products', (req, res) => {
   res.send(data.products);
 });
+
 //defines a route for handling GET requests to the /api/products/slug/:slug endpoint. The :slug part is a route parameter, which means that this endpoint expects a dynamic value to be provided in place of :slug
 app.get('/api/products/slug/:slug', (req, res) => {
   // The find method is used to locate the product with a matching slug
