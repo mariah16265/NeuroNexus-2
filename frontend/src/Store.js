@@ -2,7 +2,12 @@ import { createContext, useReducer } from 'react';
 export const Store = createContext();
 const initialState = {
   cart: {
-    cartItems: [],
+    cartItems: localStorage.getItem('cartItems')
+      ? // If local storage contains a value for "cartItems,"
+        //parsing that JSON string to convert it back into a JavaScript array.
+        JSON.parse(localStorage.getItem('cartItems'))
+      : // If local storage doesn't contain "cartItems" or if there's an issue with parsing the JSON data, an empty array [] is used as a fallback.
+        [],
   },
 };
 //The reducer function is used to update the state based on dispatched actions.
@@ -23,9 +28,22 @@ function reducer(state, action) {
             item._id === existItem._id ? newItem : item
           )
         : [...state.cart.cartItems, newItem];
+      //JSON.stringify to convert cartItems to string and save them in 'cartItems'
+      localStorage.setItem('cartItems', JSON.stringify(cartItems));
       //The return statement constructs a new state object. It uses the spread operator to clone the existing state object and then updates the cart property with a new object that has the updated cartItems.
       return { ...state, cart: { ...state.cart, cartItems } };
+    case 'CART_REMOVE_ITEM': {
+      //new array of cartItems is created, it is derived from the current state.cart.cartItems
+      //to create a new array that includes only the items that do not match the condition
+      const cartItems = state.cart.cartItems.filter(
+        (item) => item._id !== action.payload._id
+      );
+      localStorage.setItem('cartItems', JSON.stringify(cartItems));
 
+      // replaces the cartItems property with the new cartItems array.
+      return { ...state, cart: { ...state.cart, cartItems } };
+      //The result is a new state with the specified item removed from the shopping cart.
+    }
     default:
       return state;
   }
