@@ -7,7 +7,9 @@ body {
   /* background-size: cover; */
 }
 /*1 rem=16px */
-
+.header {
+  color: #181c24;
+}
 #heading {
   /* background-color: #ffffff; */
   /* width: 400px; */
@@ -91,4 +93,15 @@ main {
 }
 .small-container {
   max-width: 600px;
+}
+#pos {
+  margin-top: 10px;
+}
+.nav-link {
+  color: #fff;
+  font-family: inherit;
+}
+.custom-dropdown.nav-line-1.nav-progressive-content {
+  display: flex;
+  align-items: center;
 }

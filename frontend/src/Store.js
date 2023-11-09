@@ -1,6 +1,11 @@
 import { createContext, useReducer } from 'react';
 export const Store = createContext();
 const initialState = {
+  userInfo: localStorage.getItem('userInfo') // If local storage contains a value for "userInfo,"
+    ? //parsing that JSON string to convert it back into a JavaScript array.
+      JSON.parse(localStorage.getItem('userInfo'))
+    : // If local storage doesn't contain "userInfo" or if there's an issue with parsing the JSON data, set to null
+      null,
   cart: {
     cartItems: localStorage.getItem('cartItems')
       ? // If local storage contains a value for "cartItems,"
@@ -46,6 +51,11 @@ function reducer(state, action) {
     }
     case 'USER_SIGNIN':
       return { ...state, userInfo: action.payload };
+    case 'USER_SIGNOUT':
+      return {
+        ...state,
+        userInfo: null,
+      };
     default:
       return state;
   }

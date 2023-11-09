@@ -5,7 +5,7 @@ import Navbar from 'react-bootstrap/Navbar';
 import Container from 'react-bootstrap/Container';
 import { LinkContainer } from 'react-router-bootstrap';
 import logo from './logo.jpg';
-import { Badge, Nav } from 'react-bootstrap';
+import { Badge, Nav, NavDropdown } from 'react-bootstrap';
 import { useContext } from 'react';
 import { Store } from './Store.js';
 import cartpic from './cartpic.jpg';
@@ -13,8 +13,12 @@ import CartScreen from './screens/CartScreen.js';
 import SigninScreen from './screens/SigninScreen.js';
 //JSX is a syntax extension for JavaScript that allows you to write HTML-like code in your JavaScript files.
 function App() {
-  const { state } = useContext(Store);
-  const { cart } = state;
+  const { state, dispatch: ctxDispatch } = useContext(Store);
+  const { cart, userInfo } = state;
+  const signoutHandler = () => {
+    ctxDispatch({ type: 'USER_SIGNOUT' });
+    localStorage.removeItem('userInfo');
+  };
 
   return (
     //React Router DOM makes it easy to create single-page applications (SPAs) with multiple views or pages,
@@ -23,7 +27,7 @@ function App() {
     <BrowserRouter>
       <div className="d-flex flex-column site-container">
         <header>
-          <Navbar bg="dark" variant="dark">
+          <Navbar style={{ backgroundColor: '#181c24' }} variant="dark">
             <Container>
               <LinkContainer to="/">
                 <Navbar.Brand>
@@ -37,6 +41,32 @@ function App() {
                 </Navbar.Brand>
               </LinkContainer>
               <Nav className="ms-auto">
+                {userInfo ? (
+                  <NavDropdown
+                    className="nav-line-1 nav-progressive-content me-4 custom-dropdown"
+                    title={'Hello, ' + userInfo.name}
+                    id="basic=nav-dropdown"
+                  >
+                    <LinkContainer to="/profile">
+                      <NavDropdown.Item>User Profile</NavDropdown.Item>
+                    </LinkContainer>
+                    <LinkContainer to="/orderhistory">
+                      <NavDropdown.Item>Order History</NavDropdown.Item>
+                    </LinkContainer>
+                    <NavDropdown.Divider />
+                    <Link
+                      className="dropdown-item"
+                      to="#signout"
+                      onClick={signoutHandler}
+                    >
+                      Sign Out
+                    </Link>
+                  </NavDropdown>
+                ) : (
+                  <Link id="pos" className="nav-link me-5" to="/signin">
+                    Sign In{' '}
+                  </Link>
+                )}
                 <Link
                   to="/cart"
                   className="nav-link"
@@ -46,7 +76,7 @@ function App() {
                     id="letstry"
                     src={cartpic}
                     alt="Logo"
-                    width="50"
+                    width="90"
                     height="47"
                     className="d-inline-block align-middle"
                   />
@@ -59,8 +89,8 @@ function App() {
                         //allows you to place it anywhere within the container.
                         position: 'absolute',
                         //to position the badge's top-left corner at the center of the container.
-                        top: '45%',
-                        left: '57%',
+                        top: '35%',
+                        left: '37%',
                         //centers the badge within the container both vertically and horizontally.
                         transform: 'translate(-50%, -50%)',
                       }}
