@@ -14,6 +14,10 @@ const initialState = {
       : // If local storage doesn't contain "userInfo" or if there's an issue with parsing the JSON data, set to an empty obj
         {},
 
+    paymentMethod: localStorage.getItem('paymentMethod')
+      ? localStorage.getItem('paymentMethod')
+      : '',
+
     cartItems: localStorage.getItem('cartItems')
       ? // If local storage contains a value for "cartItems,"
         //parsing that JSON string to convert it back into a JavaScript array.
@@ -66,6 +70,7 @@ function reducer(state, action) {
         cart: {
           cartItems: [],
           shippingAddress: {},
+          paymentMethod: '',
         },
       };
     case 'SAVE_SHIPPING_ADDRESS':
@@ -77,7 +82,15 @@ function reducer(state, action) {
           shippingAddress: action.payload,
         },
       };
-
+    case 'SAVE_PAYMENT_METHOD':
+      return {
+        ...state,
+        //only making change in the cart, that also only in the paymentMethod
+        cart: {
+          ...state.cart,
+          paymentMethod: action.payload,
+        },
+      };
     default:
       return state;
   }
