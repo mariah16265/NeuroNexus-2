@@ -4,6 +4,8 @@ import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import seedRouter from './routes/seedRoutes.js';
 import productRouter from './routes/productRoutes.js';
+import userRouter from './routes/userRoutes.js';
+
 //to fetch variables in env file
 dotenv.config();
 //connect to database
@@ -19,10 +21,17 @@ mongoose
   });
 
 const app = express();
+//form data in post req will be converted to JSON obj
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use('/api/seed', seedRouter);
-
 app.use('/api/products', productRouter);
+app.use('/api/users', userRouter);
 
+//error handler for express
+app.use((err, req, res, next) => {
+  res.status(500).send({ message: err.message });
+});
 const port = process.env.PORT || 4000;
 app.listen(port, () => {
   console.log(`server at http://localhost:${port}`);
