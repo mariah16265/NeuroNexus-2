@@ -7,6 +7,13 @@ const initialState = {
     : // If local storage doesn't contain "userInfo" or if there's an issue with parsing the JSON data, set to null
       null,
   cart: {
+    // If local storage contains a value for "shippingAddress,"
+    //parsing that JSON string to convert it back into a JavaScript array.
+    shippingAddress: localStorage.getItem('shippingAddress')
+      ? JSON.parse(localStorage.getItem('shippingAddress'))
+      : // If local storage doesn't contain "userInfo" or if there's an issue with parsing the JSON data, set to an empty obj
+        {},
+
     cartItems: localStorage.getItem('cartItems')
       ? // If local storage contains a value for "cartItems,"
         //parsing that JSON string to convert it back into a JavaScript array.
@@ -55,7 +62,22 @@ function reducer(state, action) {
       return {
         ...state,
         userInfo: null,
+        //i.e, if user is signed out reset cart
+        cart: {
+          cartItems: [],
+          shippingAddress: {},
+        },
       };
+    case 'SAVE_SHIPPING_ADDRESS':
+      return {
+        ...state,
+        //only making change in the cart, that also only in the shippingAddress
+        cart: {
+          ...state.cart,
+          shippingAddress: action.payload,
+        },
+      };
+
     default:
       return state;
   }
