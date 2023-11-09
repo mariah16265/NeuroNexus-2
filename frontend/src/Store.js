@@ -44,6 +44,8 @@ function reducer(state, action) {
       return { ...state, cart: { ...state.cart, cartItems } };
       //The result is a new state with the specified item removed from the shopping cart.
     }
+    case 'USER_SIGNIN':
+      return { ...state, userInfo: action.payload };
     default:
       return state;
   }
