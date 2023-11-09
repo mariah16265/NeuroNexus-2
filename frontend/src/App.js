@@ -11,6 +11,8 @@ import { Store } from './Store.js';
 import cartpic from './cartpic.jpg';
 import CartScreen from './screens/CartScreen.js';
 import SigninScreen from './screens/SigninScreen.js';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 //JSX is a syntax extension for JavaScript that allows you to write HTML-like code in your JavaScript files.
 function App() {
   const { state, dispatch: ctxDispatch } = useContext(Store);
@@ -26,6 +28,7 @@ function App() {
     //without requiring a full page refresh.
     <BrowserRouter>
       <div className="d-flex flex-column site-container">
+        <ToastContainer position="bottom-center" limit={1} />
         <header>
           <Navbar style={{ backgroundColor: '#181c24' }} variant="dark">
             <Container>

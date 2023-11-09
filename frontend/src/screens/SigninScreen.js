@@ -4,8 +4,10 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import axios from 'axios';
 import { Helmet } from 'react-helmet-async';
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Store } from '../Store';
+import { toast } from 'react-toastify';
+import { getError } from '../util';
 
 export default function SigninScreen() {
   const navigate = useNavigate();
@@ -35,9 +37,15 @@ export default function SigninScreen() {
       localStorage.setItem('userInfo', JSON.stringify(data));
       navigate(redirect || '/');
     } catch (err) {
-      alert('Invalid email or password');
+      toast.error(getError(err));
     }
   };
+  //if user exists, redirect him to redirect variable
+  useEffect(() => {
+    if (userInfo) {
+      navigate(redirect);
+    }
+  }, [navigate, redirect, userInfo]);
   return (
     <Container className="small-container">
       <Helmet>
