@@ -32,4 +32,19 @@ orderRouter.post(
     res.status(201).send({ message: 'New Order Created', order });
   })
 );
+orderRouter.get(
+  '/:id',
+  //route requires authentication (isAuth), meaning that the user must be logged in to create a new order.
+  //expressAsyncHandler. This is a utility function that helps to handle errors in asynchronous Express route handlers.
+  isAuth,
+  expressAsyncHandler(async (req, res) => {
+    const order = await Order.findById(req.params.id);
+    if (order) {
+      res.send(order);
+    } else {
+      res.status(404).send({ message: 'Order Not Found!' });
+    }
+  })
+);
+
 export default orderRouter;
