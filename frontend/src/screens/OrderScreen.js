@@ -5,9 +5,12 @@ import { Store } from '../Store';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import { getError } from '../util';
+import { PayPalButtons, usePayPalScriptReducer } from '@paypal/react-paypal-js';
 import { Helmet } from 'react-helmet-async';
-import { Card, Col, ListGroup, Row } from 'react-bootstrap';
+import { Card, Col, ListGroup, ListGroupItem, Row } from 'react-bootstrap';
+import { toast } from 'react-toastify';
 
+//The reducer function is responsible for managing the state updates based on different action types.
 function reducer(state, action) {
   switch (action.type) {
     case 'FETCH_REQUEST':
@@ -16,44 +19,133 @@ function reducer(state, action) {
       return { ...state, loading: false, order: action.payload, error: '' };
     case 'FETCH_FAIL':
       return { ...state, loading: false, error: action.payload };
+    case 'PAY_REQUEST':
+      return { ...state, loadingPay: true };
+    case 'PAY_SUCCESS':
+      return { ...state, loadingPay: false, successPay: true };
+    case 'PAY_FAIL':
+      return { ...state, loadingPay: false };
+    case 'PAY_RESET':
+      return { ...state, loadingPay: false, successPay: false };
+
     default:
       return { state };
   }
 }
+
 export default function OrderScreen() {
+  //It uses the useContext hook to get the state from a context
   const { state } = useContext(Store);
   const { userInfo } = state;
 
+  //It uses the useParams hook from React Router to get parameters from the URL.
   const params = useParams();
   const { id: orderId } = params;
   const navigate = useNavigate();
 
-  const [{ loading, error, order }, dispatch] = useReducer(reducer, {
-    loading: true,
-    order: {},
-    error: '',
-  });
+  const [{ loading, error, order, successPay, loadingPay }, dispatch] =
+    useReducer(reducer, {
+      loading: true,
+      order: {},
+      error: '',
+      successPay: false,
+      loadingPay: false,
+    });
+  //It uses the usePayPalScriptReducer hook to manage the state related to PayPal script loading.
+  const [{ isPending }, paypalDispatch] = usePayPalScriptReducer();
+  function createOrder(data, actions) {
+    return actions.order
+      .create({
+        purchase_units: [
+          {
+            amount: { value: order.totalPrice },
+          },
+        ],
+      })
+      .then((orderId) => {
+        return orderId;
+      });
+  }
+  //after successful payment
+  function onApprove(data, actions) {
+    //It captures the payment details once the user approves the payment on the PayPal platform. The result is a details object.
+    return actions.order.capture().then(async function (details) {
+      try {
+        dispatch({ type: 'PAY_REQUEST' });
+        //It makes a PUT request to the server to update the order's payment status.
+        const { data } = await axios.put(
+          `/api/orders/${order._id}/pay`,
+          details,
+          {
+            headers: { authorization: `Bearer ${userInfo.token}` },
+          }
+        );
+        //If the PUT request is successful, it dispatches a 'PAY_SUCCESS' action with the received data as the payload.
+        dispatch({ type: 'PAY_SUCCESS', payload: data });
+        toast.success('Order is paid!');
+      } catch (err) {
+        dispatch({ type: 'PAY_FAIL', payload: getError(err) });
+        toast.error(getError(err));
+      }
+    });
+  }
+
+  function onError(err) {
+    toast.error(getError(err));
+  }
 
   useEffect(() => {
+    // Function to fetch order details from the server
+
     const fetchOrder = async () => {
       try {
+        //  Dispatching an action to indicate that a fetch request is in progress
+
         dispatch({ type: 'FETCH_REQUEST' });
+
+        // Making a GET request to fetch order details from the server
+
         const { data } = await axios.get(`/api/orders/${orderId}`, {
           headers: { authorization: `Bearer ${userInfo.token}` },
         });
+
+        // Dispatching an action with fetched data on successful fetch
         dispatch({ type: 'FETCH_SUCCESS', payload: data });
       } catch (err) {
+        // Dispatching an action with error details on fetch failure
         dispatch({ type: 'FETCH_FAIL', payload: getError(err) });
       }
     };
 
+    // Redirect to login page if user is not authenticated
     if (!userInfo) {
       return navigate('/login');
     }
-    if (!order._id || (order._id && order._id !== orderId)) {
+    if (!order._id || successPay || (order._id && order._id !== orderId)) {
       fetchOrder();
-    }
-  }, [order, userInfo, orderId, navigate]);
+      if (successPay) {
+        dispatch({ type: 'PAY_RESET' });
+      }
+    } else {
+      const loadPaypalScript = async () => {
+        // Making a GET request to retrieve PayPal client ID
+        const { data: clientId } = await axios.get('/api/keys/paypal', {
+          headers: { authorization: `Bearer ${userInfo.token}` },
+        });
+
+        // Dispatching actions to reset PayPal options and set loading status
+        paypalDispatch({
+          type: 'resetOptions',
+          value: {
+            'client-id': clientId,
+            currency: 'USD',
+          },
+        });
+        paypalDispatch({ type: 'setLoadingStatus', value: 'pending' });
+      };
+      loadPaypalScript();
+    } //dependency array ,ensures that the effect is re-run whenever any of these dependencies change.
+  }, [order, userInfo, orderId, navigate, paypalDispatch, successPay]);
 
   return loading ? (
     <LoadingBox></LoadingBox>
@@ -160,7 +252,7 @@ export default function OrderScreen() {
           <Card
             className="mb-3"
             style={{
-              height: '220px',
+              height: '380px',
               width: '300px',
               padding: '5px',
             }}
@@ -186,6 +278,28 @@ export default function OrderScreen() {
                     <Col>AED {order.taxPrice}</Col>
                   </Row>
                 </ListGroup.Item>
+                <ListGroup.Item>
+                  <Row>
+                    <Col>Order Total</Col>
+                    <Col>AED {order.totalPrice}</Col>
+                  </Row>
+                </ListGroup.Item>
+                {!order.isPaid && (
+                  <ListGroup.Item>
+                    {isPending ? (
+                      <LoadingBox />
+                    ) : (
+                      <div>
+                        <PayPalButtons
+                          createOrder={createOrder}
+                          onApprove={onApprove}
+                          onError={onError}
+                        ></PayPalButtons>
+                      </div>
+                    )}
+                    {loadingPay && <LoadingBox></LoadingBox>}
+                  </ListGroup.Item>
+                )}
               </ListGroup>
             </Card.Body>
           </Card>
