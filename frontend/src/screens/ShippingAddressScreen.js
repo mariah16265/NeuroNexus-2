@@ -104,7 +104,7 @@ export default function ShippingAddressScreen() {
               required
             />
           </Form.Group>
-          <div className="mb-3">
+          <div className="mb-3" style={{ padding: '2px' }}>
             <Button variant="primary" type="submit">
               Continue
             </Button>
