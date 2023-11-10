@@ -22,6 +22,7 @@ import PlaceOrderScreen from './screens/PlaceOrderScreen.js';
 import OrderScreen from './screens/OrderScreen.js';
 import OrderHistoryScreen from './screens/OrderHistoryScreen.js';
 import ProfileScreen from './screens/ProfileScreen.js';
+import SearchBox from './Components/SearchBox.js';
 //JSX is a syntax extension for JavaScript that allows you to write HTML-like code in your JavaScript files.
 function App() {
   const { state, dispatch: ctxDispatch } = useContext(Store);
@@ -55,6 +56,7 @@ function App() {
                   />
                 </Navbar.Brand>
               </LinkContainer>
+              <SearchBox />
               <Nav className="ms-auto">
                 <img
                   id="new"

@@ -31,7 +31,8 @@ main {
   flex: 1;
   padding: 1rem;
 }
-.btn-primary {
+.btn-primary,
+.btn-outline-primary {
   background-color: #f0c040;
   color: black;
 }
