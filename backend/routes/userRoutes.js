@@ -5,7 +5,6 @@ import jwt from 'jsonwebtoken';
 import User from '../models/userModel.js';
 import { generateToken, isAuth } from '../utils.js';
 const userRouter = express.Router();
-
 userRouter.put(
   '/profile',
   isAuth,
