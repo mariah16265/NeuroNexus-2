@@ -5,6 +5,8 @@ import Navbar from 'react-bootstrap/Navbar';
 import Container from 'react-bootstrap/Container';
 import { LinkContainer } from 'react-router-bootstrap';
 import logo from './logo.jpg';
+import lang from './lang.jpg';
+
 import { Badge, Nav, NavDropdown } from 'react-bootstrap';
 import { useContext } from 'react';
 import { Store } from './Store.js';
@@ -49,6 +51,13 @@ function App() {
                 </Navbar.Brand>
               </LinkContainer>
               <Nav className="ms-auto">
+                <img
+                  id="new"
+                  src={lang}
+                  alt="Language"
+                  width="67.38"
+                  height="36"
+                />
                 {userInfo ? (
                   <NavDropdown
                     className="nav-line-1 nav-progressive-content me-4 custom-dropdown"

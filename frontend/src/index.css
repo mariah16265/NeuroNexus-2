@@ -117,3 +117,10 @@ main {
   border-bottom: 0.2rem solid #f08000;
   color: #f08000;
 }
+#new {
+  margin-top: 12px;
+  margin-right: 24px;
+  cursor: pointer;
+}
+/* Add styling for the slick-prev and slick-next buttons */
+/* Add styling for the slick-prev and slick-next buttons */

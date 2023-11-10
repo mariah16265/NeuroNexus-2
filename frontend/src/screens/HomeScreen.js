@@ -8,6 +8,15 @@ import Product from '../Components/Product';
 import { Helmet } from 'react-helmet-async';
 import LoadingBox from '../Components/LoadingBox';
 import MessageBox from '../Components/MessageBox';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
+import Slider from 'react-slick';
+import slide1 from '../slide1.jpg';
+import slide2 from '../slide2.jpg';
+import slide3 from '../slide3.jpg';
+import slide4 from '../slide4.jpg';
+import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
+
 const reducer = (state, action) => {
   switch (action.type) {
     case 'FETCH_REQUEST':
@@ -52,7 +61,46 @@ function HomeScreen() {
       <Helmet>
         <title>Amazon</title>
       </Helmet>
+
+      {/* Slideshow */}
+      <Slider
+        dots={true}
+        infinite={true}
+        speed={500}
+        slidesToShow={1}
+        slidesToScroll={1}
+        style={{
+          margin: '20px auto', // Add margin for centering
+          padding: '20px', // Add padding for spacing
+          border: '1px solid #ddd', // Add a border for distinction
+          borderRadius: '8px', // Optional: Add border radius for rounded corners
+        }}
+        prevArrow={
+          <button id="b1" className="slick-prev">
+            Previous
+          </button>
+        }
+        nextArrow={<button className="slick-next">Next</button>}
+      >
+        <div>
+          {/* Content for Slide 1 */}
+          <img src={slide4} width="100%" alt="Slide 4" />
+        </div>
+        <div>
+          {/* Content for Slide 2 */}
+          <img src={slide2} width="100%" alt="Slide 2" />
+        </div>
+        <div>
+          {/* Content for Slide 2 */}
+          <img src={slide3} width="100%" alt="Slide 3" />
+        </div>
+        <div>
+          {/* Content for Slide 2 */}
+          <img src={slide1} width="100%" alt="Slide 1" />
+        </div>
+      </Slider>
       <h1 id="heading">Featured Products</h1>
+
       <div className="products">
         {loading ? (
           <LoadingBox />
