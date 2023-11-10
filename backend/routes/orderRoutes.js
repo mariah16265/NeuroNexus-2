@@ -32,17 +32,24 @@ orderRouter.post(
     res.status(201).send({ message: 'New Order Created', order });
   })
 );
+
+orderRouter.get(
+  '/mine',
+  isAuth,
+  expressAsyncHandler(async (req, res) => {
+    const orders = await Order.find({ user: req.user._id });
+    res.send(orders);
+  })
+);
 orderRouter.get(
   '/:id',
-  //route requires authentication (isAuth), meaning that the user must be logged in to create a new order.
-  //expressAsyncHandler. This is a utility function that helps to handle errors in asynchronous Express route handlers.
   isAuth,
   expressAsyncHandler(async (req, res) => {
     const order = await Order.findById(req.params.id);
     if (order) {
       res.send(order);
     } else {
-      res.status(404).send({ message: 'Order Not Found!' });
+      res.status(404).send({ message: 'Order Not Found' });
     }
   })
 );
@@ -50,7 +57,10 @@ orderRouter.put(
   '/:id/pay',
   isAuth,
   expressAsyncHandler(async (req, res) => {
-    const order = await Order.findById(req.params.id);
+    const order = await Order.findById(req.params.id).populate(
+      'user',
+      'email name'
+    );
     if (order) {
       order.isPaid = true;
       order.paidAt = Date.now();
@@ -61,12 +71,10 @@ orderRouter.put(
         email_address: req.body.email_address,
       };
       //save
-      const updatedOrder = await order.save();
       res.send({ message: 'Order Paid', order: updatedOrder });
     } else {
-      res.status(404).send({ message: 'Order Not Found!' });
+      res.status(404).send({ message: 'Order Not Found' });
     }
   })
 );
-
 export default orderRouter;

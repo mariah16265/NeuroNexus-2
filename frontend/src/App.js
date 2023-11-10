@@ -20,6 +20,8 @@ import SignupScreen from './screens/SignupScreen.js';
 import PaymentMethodScreen from './screens/PaymentMethodScreen.js';
 import PlaceOrderScreen from './screens/PlaceOrderScreen.js';
 import OrderScreen from './screens/OrderScreen.js';
+import OrderHistoryScreen from './screens/OrderHistoryScreen.js';
+import ProfileScreen from './screens/ProfileScreen.js';
 //JSX is a syntax extension for JavaScript that allows you to write HTML-like code in your JavaScript files.
 function App() {
   const { state, dispatch: ctxDispatch } = useContext(Store);
@@ -29,6 +31,7 @@ function App() {
     localStorage.removeItem('userInfo');
     localStorage.removeItem('shippingAddress');
     localStorage.removeItem('paymentMethod');
+    window.location.href = '/signin';
   };
 
   return (
@@ -129,12 +132,12 @@ function App() {
               <Route path="/cart" element={<CartScreen />} />
               <Route path="/signin" element={<SigninScreen />} />
               <Route path="/signup" element={<SignupScreen />} />
-
+              <Route path="/profile" element={<ProfileScreen />} />
               <Route path="/shipping" element={<ShippingAddressScreen />} />
               <Route path="/payment" element={<PaymentMethodScreen />} />
               <Route path="/placeorder" element={<PlaceOrderScreen />} />
               <Route path="/order/:id" element={<OrderScreen />} />
-
+              <Route path="/orderhistory" element={<OrderHistoryScreen />} />
               <Route path="/" element={<HomeScreen />} />
             </Routes>
           </Container>
