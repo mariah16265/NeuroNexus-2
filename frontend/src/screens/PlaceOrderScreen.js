@@ -1,4 +1,5 @@
-import React, { useContext, useEffect } from 'react';
+import axios from 'axios';
+import React, { useContext, useEffect, useReducer } from 'react';
 import { Helmet } from 'react-helmet-async';
 import {
   Button,
@@ -11,22 +12,81 @@ import {
 import { Store } from '../Store';
 import CheckoutSteps from '../Components/CheckoutSteps';
 import { Link, useNavigate } from 'react-router-dom';
+import { getError } from '../util';
+import { toast } from 'react-toastify';
+import LoadingBox from '../Components/LoadingBox';
+
+const reducer = (state, action) => {
+  switch (action.type) {
+    case 'CREATE_REQUEST':
+      return { ...state, loading: true };
+    case 'CREATE_SUCCESS':
+      return { ...state, loading: false };
+    case 'CREATE_FAIL':
+      return { ...state, loading: false };
+    default:
+      return state;
+  }
+};
 
 export default function PlaceOrderScreen() {
   const navigate = useNavigate();
-  const { state, disatch: ctxDispatch } = useContext(Store);
+
+  const [{ loading }, dispatch] = useReducer(reducer, {
+    loading: false,
+  });
+
+  const { state, dispatch: ctxDispatch } = useContext(Store);
+  //It destructures the state object to get cart and userInfo
   const { cart, userInfo } = state;
 
-  const round2 = (num) => Math.round(num * 100 + Number.EPSILON) / 100;
+  // rounds a number to two decimal places using the Math.round method.
+  const round2 = (num) => Math.round(num * 100 + Number.EPSILON) / 100; // 123.2345 => 123.23
+
+  //itemsPrice: Total price of all items in the cart.
+  // shippingPirce: Shipping price is free if itemsPrice is greater than 100, otherwise, it's 10.
+  // taxPirce: Tax is calculated as 15% of itemsPrice.
+  // totalPrice: Total cost including items, shipping, and tax.
   cart.itemsPrice = round2(
     cart.cartItems.reduce((a, c) => a + c.quantity * c.price, 0)
   );
+  cart.shippingPrice = cart.itemsPrice > 100 ? round2(0) : round2(10);
+  cart.taxPrice = round2(0.15 * cart.itemsPrice);
+  cart.totalPrice = cart.itemsPrice + cart.shippingPrice + cart.taxPrice;
+  const placeOrderHandler = async () => {
+    try {
+      dispatch({ type: 'CREATE_REQUEST' });
 
-  cart.shippingPirce = cart.itemsPrice > 100 ? round2(0) : round2(10);
-  cart.taxPirce = round2(0.15 * cart.itemsPrice);
-  cart.totalPrice = cart.itemsPrice + cart.shippingPirce + cart.taxPirce;
+      //Makes a POST request to create an order on the server.
+      const { data } = await axios.post(
+        '/api/orders',
+        {
+          orderItems: cart.cartItems,
+          shippingAddress: cart.shippingAddress,
+          paymentMethod: cart.paymentMethod,
+          itemsPrice: cart.itemsPrice,
+          shippingPrice: cart.shippingPrice,
+          taxPrice: cart.taxPrice,
+          totalPrice: cart.totalPrice,
+        },
+        //this API is authenticated
+        {
+          headers: {
+            authorization: `Bearer ${userInfo.token}`,
+          },
+        }
+      );
+      ctxDispatch({ type: 'CART_CLEAR' });
+      dispatch({ type: 'CREATE_SUCCESS' });
+      localStorage.removeItem('cartItems');
+      navigate(`/order/${data.order._id}`);
+    } catch (err) {
+      dispatch({ type: 'CREATE_FAIL' });
+      toast.error(getError(err));
+    }
+  };
 
-  const placeOrderHandler = async () => {};
+  //This useEffect ensures that if the user hasn't selected a payment method, they are redirected to the payment page.
   useEffect(() => {
     if (!cart.paymentMethod) {
       navigate('/payment');
@@ -40,7 +100,9 @@ export default function PlaceOrderScreen() {
       <Helmet>
         <title>Preview Order</title>
       </Helmet>
-      <h1 className="my-3">Preview Order</h1>
+      <h1 className="my-3" id="new1">
+        Preview Order
+      </h1>
 
       <Row>
         <Col md={7}>
@@ -48,7 +110,7 @@ export default function PlaceOrderScreen() {
             className="mb-3"
             style={{
               height: '255px',
-              width: '540px',
+              width: '660px',
               padding: '14px',
             }} // Added marginBottom
           >
@@ -65,7 +127,7 @@ export default function PlaceOrderScreen() {
           </Card>
           <Card
             className="mb-3"
-            style={{ height: '165px', width: '210px', padding: '14px' }}
+            style={{ height: '165px', width: '660px', padding: '14px' }}
           >
             <Card.Body>
               <Card.Title>Payment</Card.Title>
@@ -129,13 +191,13 @@ export default function PlaceOrderScreen() {
                 <ListGroup.Item>
                   <Row>
                     <Col>Shipping</Col>
-                    <Col>AED {cart.shippingPirce.toFixed(2)}</Col>
+                    <Col>AED {cart.shippingPirce}</Col>
                   </Row>
                 </ListGroup.Item>
                 <ListGroup.Item>
                   <Row>
                     <Col>Tax</Col>
-                    <Col>AED {cart.taxPirce.toFixed(2)}</Col>
+                    <Col>AED {cart.taxPirce}</Col>
                   </Row>
                 </ListGroup.Item>
                 <ListGroup.Item>
@@ -155,6 +217,7 @@ export default function PlaceOrderScreen() {
                       Place Order
                     </Button>
                   </div>
+                  {loading && <LoadingBox></LoadingBox>}
                 </ListGroup.Item>
               </ListGroup>
             </Card.Body>
