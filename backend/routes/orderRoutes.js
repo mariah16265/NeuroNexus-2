@@ -9,8 +9,12 @@ const orderRouter = express.Router();
 
 orderRouter.post(
   '/',
+  //route requires authentication (isAuth), meaning that the user must be logged in to create a new order.
+  //expressAsyncHandler. This is a utility function that helps to handle errors in asynchronous Express route handlers.
   isAuth,
   expressAsyncHandler(async (req, res) => {
+    //new instance of the Order model
+    //with data provided in the request body (req.body).
     const newOrder = new Order({
       orderItems: req.body.orderItems.map((x) => ({ ...x, product: x._id })),
       shippingAddress: req.body.shippingAddress,
@@ -21,7 +25,10 @@ orderRouter.post(
       totalPrice: req.body.totalPrice,
       user: req.user._id,
     });
+    //The new order instance is saved to the database using the save method,
     const order = await newOrder.save();
+    //The result is then sent as a JSON response with a status code of 201 (indicating that the request was successful, and a resource was created).
+    //The response includes a message and the details of the created order.
     res.status(201).send({ message: 'New Order Created', order });
   })
 );

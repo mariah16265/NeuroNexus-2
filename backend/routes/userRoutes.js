@@ -31,14 +31,20 @@ userRouter.post(
   })
 );
 userRouter.post(
+  //sets up a route for handling HTTP POST requests to the '/signup' endpoint.
+  //expressAsyncHandler. This utility function helps to handle errors in asynchronous Express route handlers.
   '/signup',
   expressAsyncHandler(async (req, res) => {
+    //new instance of the User model
+    // The user information is taken from the request body (req.body). It includes the user's name, email, and a hashed version of the password. The password is hashed synchronously using bcrypt.hashSync.
     const newUser = new User({
       name: req.body.name,
       email: req.body.email,
       password: bcrypt.hashSync(req.body.password),
     });
+    // new user instance is saved to the database using the save method
     const user = await newUser.save();
+    //A JSON response is sent back to the client. It includes the user's information such as their _id, name, email, isAdmin status, and a token.
     res.send({
       _id: user._id,
       name: user.name,
