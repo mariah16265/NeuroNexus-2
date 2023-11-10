@@ -24,7 +24,7 @@ const data = {
       countInStock: 10,
       price: 74.98,
       brand: 'CeraVe',
-      rating: 4.85,
+      rating: 3.85,
       numReviews: 410,
       description:
         'CeraVe Foaming Facial Cleanser features ceramides, hyaluronic acid, and niacinamide, and is formulated to help to maintain your skin’s protective barrier, lock in moisture, and calm your skin.',
