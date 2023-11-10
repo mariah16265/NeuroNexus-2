@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import CheckoutSteps from '../Components/CheckoutSteps';
 import { Helmet } from 'react-helmet-async';
-import { Button, Form } from 'react-bootstrap';
+import { Button, Card, Form } from 'react-bootstrap';
 import { Store } from '../Store';
 import { useNavigate } from 'react-router-dom';
 
@@ -25,15 +25,13 @@ export default function PaymentMethodScreen() {
     localStorage.setItem('paymentMethod', paymentMethodName);
     navigate('/placeorder');
   };
+
   return (
-    <div>
-      <CheckoutSteps step1 step2 step3></CheckoutSteps>
-      <div className="conatiner small-container">
-        <Helmet>
-          <title>Payment Method</title>
-        </Helmet>
-        <h1 className="my-3"> Payment Method</h1>
-        <Form onSubmit={submitHandler}>
+    <Form onSubmit={submitHandler}>
+      <h1 className="my-3 mb-4">Choose a Payment Method</h1>
+
+      <Card className="my-3 p-3 ">
+        <Card.Body>
           <div className="mb-3">
             <Form.Check
               type="radio"
@@ -54,11 +52,11 @@ export default function PaymentMethodScreen() {
               onChange={(e) => setPaymentMethod(e.target.value)}
             />
           </div>
-          <div className="mb-3">
-            <Button type="submit">Continue</Button>
-          </div>
-        </Form>
-      </div>
-    </div>
+        </Card.Body>
+        <Card.Footer className="text-end">
+          <Button type="submit">Continue</Button>
+        </Card.Footer>
+      </Card>
+    </Form>
   );
 }
