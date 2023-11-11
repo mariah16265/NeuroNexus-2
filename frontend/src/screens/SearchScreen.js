@@ -20,13 +20,12 @@ const reducer = (state, action) => {
     case 'FETCH_SUCCESS':
       return {
         ...state,
-        products: action.payload.products, // Change this line
+        products: action.payload.products,
         page: action.payload.page,
         pages: action.payload.pages,
         countProducts: action.payload.countProducts,
         loading: false,
       };
-
     case 'FETCH_FAIL':
       return { ...state, loading: false, error: action.payload };
 
@@ -34,7 +33,6 @@ const reducer = (state, action) => {
       return state;
   }
 };
-
 const prices = [
   {
     name: '$1 to $50',
@@ -76,13 +74,13 @@ export default function SearchScreen() {
   const navigate = useNavigate();
   const { search } = useLocation();
   const sp = new URLSearchParams(search); // /search?category=Shirts
-  // const category = sp.get('category') || 'all';
   const query = sp.get('query') || 'all';
   const price = sp.get('price') || 'all';
   const rating = sp.get('rating') || 'all';
   const order = sp.get('order') || 'newest';
   const page = sp.get('page') || 1;
-  const [{ loading, error, products = [], pages, countProducts }, dispatch] =
+
+  const [{ loading, error, products, pages, countProducts }, dispatch] =
     useReducer(reducer, {
       loading: true,
       error: '',
@@ -104,7 +102,6 @@ export default function SearchScreen() {
     };
     fetchData();
   }, [error, order, page, price, query, rating]);
-
   // // const [categories, setCategories] = useState([]);
   // useEffect(() => {
   //   const fetchCategories = async () => {
@@ -118,15 +115,13 @@ export default function SearchScreen() {
   //   fetchCategories();
   // }, [dispatch]);
 
-  const getFilterUrl = (filter, skipPathname) => {
+  const getFilterUrl = (filter) => {
     const filterPage = filter.page || page;
     const filterQuery = filter.query || query;
     const filterRating = filter.rating || rating;
     const filterPrice = filter.price || price;
     const sortOrder = filter.order || order;
-    return `${
-      skipPathname ? '' : '/search?'
-    }&query=${filterQuery}&price=${filterPrice}&rating=${filterRating}&order=${sortOrder}&page=${filterPage}`;
+    return `/search?&query=${filterQuery}&price=${filterPrice}&rating=${filterRating}&order=${sortOrder}&page=${filterPage}`;
   };
   return (
     <div>
