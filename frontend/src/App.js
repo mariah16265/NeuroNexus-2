@@ -7,13 +7,13 @@ import { LinkContainer } from 'react-router-bootstrap';
 import logo from './logo.jpg';
 import lang from './lang.jpg';
 
-import { Badge, Nav, NavDropdown } from 'react-bootstrap';
-import { useContext } from 'react';
+import { Badge, Button, Nav, NavDropdown } from 'react-bootstrap';
+import { useContext, useEffect, useState } from 'react';
 import { Store } from './Store.js';
 import cartpic from './cartpic.jpg';
 import CartScreen from './screens/CartScreen.js';
 import SigninScreen from './screens/SigninScreen.js';
-import { ToastContainer } from 'react-toastify';
+import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ShippingAddressScreen from './screens/ShippingAddressScreen.js';
 import SignupScreen from './screens/SignupScreen.js';
@@ -24,10 +24,13 @@ import OrderHistoryScreen from './screens/OrderHistoryScreen.js';
 import ProfileScreen from './screens/ProfileScreen.js';
 import SearchBox from './Components/SearchBox.js';
 import SearchScreen from './screens/SearchScreen.js';
+import { getError } from './util.js';
+import axios from 'axios';
 //JSX is a syntax extension for JavaScript that allows you to write HTML-like code in your JavaScript files.
 function App() {
   const { state, dispatch: ctxDispatch } = useContext(Store);
   const { cart, userInfo } = state;
+
   const signoutHandler = () => {
     ctxDispatch({ type: 'USER_SIGNOUT' });
     localStorage.removeItem('userInfo');
@@ -36,16 +39,43 @@ function App() {
     window.location.href = '/signin';
   };
 
+  const [sidebarIsOpen, setSidebarIsOpen] = useState(false);
+  const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const { data } = await axios.get(`/api/products/categories`);
+        setCategories(data);
+      } catch (err) {
+        toast.error(getError(err));
+      }
+    };
+    fetchCategories();
+  }, []);
+
   return (
     //React Router DOM makes it easy to create single-page applications (SPAs) with multiple views or pages,
     //each represented by a unique URL. This helps improve the user experience by allowing users to navigate between different sections of the application
     //without requiring a full page refresh.
     <BrowserRouter>
-      <div className="d-flex flex-column site-container">
+      <div
+        className={
+          sidebarIsOpen
+            ? 'd-flex flex-column site-container active-cont'
+            : 'd-flex flex-column site-container'
+        }
+      >
         <ToastContainer position="bottom-center" limit={1} />
         <header>
           <Navbar style={{ backgroundColor: '#181c24' }} variant="dark">
             <Container>
+              <Button
+                variant="dark"
+                onClick={() => setSidebarIsOpen(!sidebarIsOpen)}
+              >
+                <i className="fas fa-bars"></i>
+              </Button>
               <LinkContainer to="/">
                 <Navbar.Brand>
                   <img
@@ -128,6 +158,30 @@ function App() {
             </Container>
           </Navbar>
         </header>
+        <div
+          className={
+            sidebarIsOpen
+              ? 'active-nav side-navbar d-flex justify-content-between flex-wrap flex-column'
+              : 'side-navbar d-flex justify-content-between flex-wrap flex-column'
+          }
+        >
+          <Nav className="flex-column text-white w-100 p-2">
+            <Nav.Item>
+              <strong>Categories</strong>
+            </Nav.Item>
+            {categories.map((category) => (
+              <Nav.Item key={category}>
+                <LinkContainer
+                  to={`/search?category=${category}`}
+                  onClick={() => setSidebarIsOpen(false)}
+                >
+                  <Nav.Link>{category}</Nav.Link>
+                </LinkContainer>
+              </Nav.Item>
+            ))}
+          </Nav>
+        </div>
+
         <main>
           <Container className="mt-3">
             <Routes>

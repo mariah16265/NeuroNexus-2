@@ -4,7 +4,7 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import { Store } from '../Store';
 import { toast } from 'react-toastify';
-import { getError } from '../util';
+import { getError } from '../util.js';
 import axios from 'axios';
 
 const reducer = (state, action) => {
@@ -23,9 +23,10 @@ const reducer = (state, action) => {
 
 export default function ProfileScreen() {
   const { state, dispatch: ctxDispatch } = useContext(Store);
+  //It destructures the state object to get cart and userInfo
   const { userInfo } = state;
-  const [name, setName] = useState(userInfo.name);
-  const [email, setEmail] = useState(userInfo.email);
+  const [name, setName] = useState(userInfo?.name || '');
+  const [email, setEmail] = useState(userInfo?.email || '');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
@@ -35,10 +36,7 @@ export default function ProfileScreen() {
 
   const submitHandler = async (e) => {
     e.preventDefault();
-    if (password !== confirmPassword) {
-      toast.error('Passwords do not match');
-      return;
-    }
+
     try {
       const { data } = await axios.put(
         '/api/users/profile',
@@ -48,7 +46,9 @@ export default function ProfileScreen() {
           password,
         },
         {
-          headers: { authorization: `Bearer ${userInfo.token}` },
+          headers: {
+            authorization: `Bearer ${userInfo.token}`,
+          },
         }
       );
       dispatch({
@@ -59,12 +59,11 @@ export default function ProfileScreen() {
       toast.success('User updated successfully');
     } catch (err) {
       dispatch({
-        type: 'UPDATE_FAIL',
+        type: 'FETCH_FAIL',
       });
       toast.error(getError(err));
     }
   };
-
   return (
     <div className="container small-container">
       <Helmet>

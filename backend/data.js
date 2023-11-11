@@ -13,6 +13,12 @@ const data = {
       password: bcrypt.hashSync('654321'),
       isAdmin: false,
     },
+    {
+      name: 'Mariah Abid Masoodi',
+      email: 'Mariah16265@gmail.com',
+      password: bcrypt.hashSync('123456'),
+      isAdmin: false,
+    },
   ],
   products: [
     {

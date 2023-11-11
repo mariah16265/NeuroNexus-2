@@ -8,6 +8,7 @@ export default function SearchBox() {
 
   const submitHandler = (e) => {
     e.preventDefault();
+    //query is a state hook
     navigate(query ? `/search/?query=${query}` : '/search');
   };
   return (

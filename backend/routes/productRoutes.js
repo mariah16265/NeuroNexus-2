@@ -7,15 +7,25 @@ productRouter.get('/', async (req, res) => {
   const products = await Product.find();
   res.send(products);
 });
-const PAGE_SIZE = 3;
+
 productRouter.get(
   '/search',
+  expressAsyncHandler(async (req, res) => {
+    const products = await Product.find();
+    res.send(products);
+  })
+);
+const PAGE_SIZE = 3;
+
+productRouter.get(
+  '/categories',
   expressAsyncHandler(async (req, res) => {
     const { query } = req;
     const pageSize = query.pageSize || PAGE_SIZE;
     const page = query.page || 1;
+    const category = query.category || ' ';
     const brand = query.brand || ' ';
-    const price = query.price || ' ';
+    const price = query.price || '';
     const rating = query.rating || ' ';
     const order = query.order || ' ';
     const searchQuery = query.query || ' ';
@@ -29,6 +39,8 @@ productRouter.get(
             },
           }
         : {};
+
+    const categoryFilter = category && category !== 'all' ? { category } : {};
     const ratingFilter =
       rating && rating !== 'all'
         ? {
@@ -37,15 +49,18 @@ productRouter.get(
             },
           }
         : {};
+
     const priceFilter =
       price && price !== 'all'
         ? {
-            rating: {
+            // 1-50
+            price: {
               $gte: Number(price.split('-')[0]),
               $lte: Number(price.split('-')[1]),
             },
           }
         : {};
+
     const sortOrder =
       order === 'featured'
         ? { featured: -1 }
@@ -57,10 +72,11 @@ productRouter.get(
         ? { rating: -1 }
         : order === 'newest'
         ? { createdAt: -1 }
-        : { id: -1 };
+        : { _id: -1 };
 
     const products = await Product.find({
       ...queryFilter,
+      ...categoryFilter,
       ...priceFilter,
       ...ratingFilter,
     })
@@ -70,10 +86,10 @@ productRouter.get(
 
     const countProducts = await Product.countDocuments({
       ...queryFilter,
+      ...categoryFilter,
       ...priceFilter,
       ...ratingFilter,
     });
-
     res.send({
       products,
       countProducts,
@@ -82,6 +98,7 @@ productRouter.get(
     });
   })
 );
+
 //defines a route for handling GET requests to the /api/products/slug/:slug endpoint. The :slug part is a route parameter, which means that this endpoint expects a dynamic value to be provided in place of :slug
 productRouter.get('/slug/:slug', async (req, res) => {
   // The find method is used to locate the product with a matching slug
@@ -93,6 +110,7 @@ productRouter.get('/slug/:slug', async (req, res) => {
     res.status(404).send({ message: 'Product Not Found' });
   }
 });
+
 productRouter.get('/:id', async (req, res) => {
   // The find method is used to locate the product with a matching slug
   const product = await Product.findById(req.params.id);
