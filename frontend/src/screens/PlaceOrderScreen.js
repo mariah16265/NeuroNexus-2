@@ -141,7 +141,7 @@ export default function PlaceOrderScreen() {
           <Card
             className="mb-3"
             style={{
-              height: '390px',
+              height: '590px',
               width: '660px',
               padding: '14px',
             }}

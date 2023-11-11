@@ -93,7 +93,10 @@ function ProductScreen() {
     //<Col md={3}> occupies 3/12 ,width = product info
     <div>
       <Row>
-        <Col md={6}>
+        <Col
+          md={6}
+          className="d-flex align-items-center justify-content-center"
+        >
           <img
             className="img-large"
             src={products.image}

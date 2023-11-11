@@ -46,27 +46,17 @@ main {
 
 /* Set the desired height for the card */
 .card {
-  width: 249px;
-}
-/* Set the height of the card's content */
-/*.card-body {
-  width: 100%;
-  overflow: hidden;
+  width: 269px;
 }
 
-
-/* If you want to adjust margins as well, you can do the following: */
-/* .mb-3 {
-  margin: 10px; /* Adjust the margin as needed */
-
-.product {
+.products {
   font-size: larger;
   font-family: 'Times New Roman', Times, serif;
   /* background-color: white; */
   /* background-image: url('C:\Users\maria\OneDrive\Desktop\amazon\frontend\inp.jpg'); */
   border: 1px #404040 solid;
-  margin: 2rem;
-  padding: 0.65rem;
+  margin: 1rem;
+  /* padding: 0.65rem; */
 
   background-color: white;
 }

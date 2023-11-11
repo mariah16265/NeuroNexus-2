@@ -156,7 +156,8 @@ function App() {
             </Routes>
           </Container>
         </main>
-        <footer>
+
+        <footer style={{ marginTop: 'auto' }}>
           <div className="text-center">All rights reserved</div>
         </footer>
       </div>

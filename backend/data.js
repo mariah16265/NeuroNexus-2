@@ -111,7 +111,7 @@ const data = {
       slug: 'Samsung-70-Inch-TV',
       category: 'Electronics',
       countInStock: 21,
-      image: '/images/p10.jpg',
+      image: '/images/p10.jpeg',
       price: 2189,
       brand: 'Samsung',
       rating: 4.1,
@@ -121,7 +121,7 @@ const data = {
     },
     {
       // _id: '4',
-      name: 'Electric Crepe Maker Machine',
+      name: 'Crepe Maker Machine',
       slug: 'Ariete-Crepe-Maker',
       category: 'Electronics',
       countInStock: 119,
