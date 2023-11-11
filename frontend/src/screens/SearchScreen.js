@@ -17,15 +17,17 @@ const reducer = (state, action) => {
   switch (action.type) {
     case 'FETCH_REQUEST':
       return { ...state, loading: true };
+    // Inside your reducer
     case 'FETCH_SUCCESS':
       return {
         ...state,
-        products: action.payload.products,
+        products: action.payload.products, // Assuming the payload is the array of products
         page: action.payload.page,
         pages: action.payload.pages,
         countProducts: action.payload.countProducts,
         loading: false,
       };
+
     case 'FETCH_FAIL':
       return { ...state, loading: false, error: action.payload };
 
@@ -79,29 +81,30 @@ export default function SearchScreen() {
   const rating = sp.get('rating') || 'all';
   const order = sp.get('order') || 'newest';
   const page = sp.get('page') || 1;
-
   const [{ loading, error, products, pages, countProducts }, dispatch] =
     useReducer(reducer, {
       loading: true,
       error: '',
+      products: [], // Change this line to set products as an empty array
     });
-
   useEffect(() => {
     const fetchData = async () => {
       try {
         const { data } = await axios.get(
           `/api/products/search?page=${page}&query=${query}&price=${price}&rating=${rating}&order=${order}`
         );
+        console.log('API Response Data:', data); // Log the API response
         dispatch({ type: 'FETCH_SUCCESS', payload: data });
       } catch (err) {
         dispatch({
           type: 'FETCH_FAIL',
-          payload: getError(error),
+          payload: getError(err),
         });
       }
     };
     fetchData();
   }, [error, order, page, price, query, rating]);
+
   // // const [categories, setCategories] = useState([]);
   // useEffect(() => {
   //   const fetchCategories = async () => {
@@ -123,6 +126,9 @@ export default function SearchScreen() {
     const sortOrder = filter.order || order;
     return `/search?&query=${filterQuery}&price=${filterPrice}&rating=${filterRating}&order=${sortOrder}&page=${filterPage}`;
   };
+  useEffect(() => {
+    console.log('After rendering products:', products);
+  }, [products]);
   return (
     <div>
       <Helmet>
@@ -220,11 +226,14 @@ export default function SearchScreen() {
               )}
 
               <Row>
+                {console.log('Before rendering products:', products)}
                 {products.map((product) => (
-                  <Col sm={6} lg={4} className="mb-3" key={products._id}>
-                    <Product product={products}></Product>
+                  <Col sm={6} lg={4} className="mb-3">
+                    <Product key={product._id} products={product}></Product>
                   </Col>
                 ))}
+
+                {/* {console.log('After rendering products:', products)} */}
               </Row>
 
               <div>

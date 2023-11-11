@@ -9,6 +9,9 @@ import { Store } from '../Store';
 function Product(props) {
   const { products } = props;
   const { state, dispatch: ctxDispatch } = useContext(Store);
+  // if (!products) {
+  //   return null;
+  // }
   const {
     cart: { cartItems },
   } = state;
