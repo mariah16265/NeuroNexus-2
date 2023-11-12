@@ -7,7 +7,10 @@ Developed a dynamic e-commerce website using React, featuring seamless user auth
 
 
 
-Uploading AMAZON RESULT.mp4…
+
+https://github.com/mariah16265/NeuroNexus-2/assets/118097369/75409bb9-903d-4cfc-bd60-7a7a4483bbbe
+
+
 
 
 
